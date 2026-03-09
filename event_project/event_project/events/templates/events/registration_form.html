@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center flex-grow-1 animate-fade-up">
+    <div class="col-md-6 col-lg-5">
+        <div class="glass-card shadow-lg">
+            <div class="text-center mb-4">
+                <h2 class="text-gradient">Secure Your Spot</h2>
+                <p class="text-light opacity-75">Register now to join our exclusive event</p>
+            </div>
+
+            <form method="post" class="needs-validation animate-fade-up stagger-1">
+                {% csrf_token %}
+
+                {% for field in form %}
+                <div class="mb-4">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.help_text %}
+                    <div class="form-text text-muted small mt-1">{{ field.help_text }}</div>
+                    {% endif %}
+                    {% if field.errors %}
+                    <div class="text-danger small mt-1 animate-fade-up">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <div class="d-grid mt-5">
+                    <button type="submit" class="btn btn-primary btn-lg rounded-pill shadow">Complete
+                        Registration</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Add custom classes to Django form inputs dynamically for styling
+    document.addEventListener("DOMContentLoaded", function () {
+        const inputs = document.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            if (input.tagName === 'SELECT') {
+                input.classList.add('form-select');
+            } else {
+                input.classList.add('form-control');
+            }
+        });
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+<script>
+    VanillaTilt.init(document.querySelectorAll(".glass-card"), {
+        max: 5,
+        speed: 400,
+        glare: true,
+        "max-glare": 0.15
+    });
+</script>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.halo.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        VANTA.HALO({
+            el: "#vanta-bg",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            baseColor: 0x00f0ff,
+            backgroundColor: 0x050505,
+            amplitudeFactor: 1.5,
+            size: 1.5
+        });
+    });
+</script>
+{% endblock %}

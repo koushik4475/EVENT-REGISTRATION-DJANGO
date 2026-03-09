@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="hero-section animate-fade-up">
+    <div class="glass-card" style="max-width: 800px; padding: 4rem 2rem;">
+        <h1 class="hero-title">Elevate Your <span class="text-gradient">Event Experience</span></h1>
+        <p class="hero-subtitle">Seamlessly register and manage attendees with our premium, cutting-edge platform
+            designed for scale and excellence.</p>
+
+        <div class="d-flex justify-content-center gap-4 mt-4 animate-fade-up stagger-2">
+            <a href="{% url 'registration_create' %}" class="btn btn-primary btn-lg rounded-pill px-5 shadow-lg">Get
+                Started Now</a>
+            {% if user.is_staff %}
+            <a href="{% url 'registration_list' %}" class="btn btn-outline-light btn-lg rounded-pill px-5">View
+                Dashboard</a>
+            {% endif %}
+        </div>
+
+        <div class="hero-stats animate-fade-up stagger-3 justify-content-center">
+            <div class="stat-item">
+                <h3 class="text-gradient">10k+</h3>
+                <p>Registrations</p>
+            </div>
+            <div class="stat-item">
+                <h3 class="text-gradient">99%</h3>
+                <p>Satisfaction</p>
+            </div>
+            <div class="stat-item">
+                <h3 class="text-gradient">24/7</h3>
+                <p>Support</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+<script>
+    VanillaTilt.init(document.querySelectorAll(".glass-card"), {
+        max: 8,
+        speed: 400,
+        glare: true,
+        "max-glare": 0.2
+    });
+</script>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        VANTA.NET({
+            el: "#vanta-bg",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0x00f0ff,
+            backgroundColor: 0x050505,
+            points: 15.00,
+            maxDistance: 25.00,
+            spacing: 20.00,
+            showDots: true
+        });
+    });
+</script>
+{% endblock %}

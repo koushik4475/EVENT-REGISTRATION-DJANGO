@@ -1,0 +1,242 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{{ title }} | NexusEvents Admin{% endblock %}
+
+{% block branding %}
+<h1 id="site-name" style="margin: 0;"><a href="{% url 'admin:index' %}"
+        style="display: flex; align-items: center; gap: 10px;">
+        <span style="color: var(--primary); font-size: 1.2em;">$</span>
+        NexusEvents Admin
+    </a></h1>
+{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+    /* ==================================================================== */
+    /* OVERRIDE DJANGO ADMIN NATIVE CSS VARIABLES TO MATCH OUR DARK 3D THEME */
+    /* ==================================================================== */
+    :root {
+        --primary: #00f0ff !important;
+        --secondary: #0080ff !important;
+        --accent: #00f0ff !important;
+        --primary-fg: #050505 !important;
+
+        /* Base Body Colors */
+        --body-fg: #ffffff !important;
+        --body-bg: transparent !important;
+        /* Transparent to show Vanta 3D background */
+        --body-quiet-color: #a0aec0 !important;
+        --body-loud-color: #ffffff !important;
+
+        /* Header & Navbar */
+        --header-color: #050505 !important;
+        --header-branding-color: #ffffff !important;
+        --header-bg: rgba(20, 20, 20, 0.6) !important;
+        --header-link-color: #ffffff !important;
+
+        /* Breadcrumbs */
+        --breadcrumbs-fg: #a0aec0 !important;
+        --breadcrumbs-link-fg: #00f0ff !important;
+        --breadcrumbs-bg: rgba(0, 0, 0, 0.6) !important;
+
+        /* Links */
+        --link-fg: #00f0ff !important;
+        --link-hover-color: #0080ff !important;
+        --link-selected-fg: #00f0ff !important;
+
+        /* Borders */
+        --hairline-color: rgba(0, 240, 255, 0.2) !important;
+        --border-color: rgba(0, 240, 255, 0.2) !important;
+
+        /* Alerts */
+        --error-fg: #ef4444 !important;
+        --message-success-bg: rgba(16, 185, 129, 0.2) !important;
+        --message-warning-bg: rgba(245, 158, 11, 0.2) !important;
+        --message-error-bg: rgba(239, 68, 68, 0.2) !important;
+
+        /* Tables & Highlights */
+        --darkened-bg: rgba(0, 0, 0, 0.3) !important;
+        --selected-bg: rgba(0, 240, 255, 0.1) !important;
+        --selected-row: rgba(0, 240, 255, 0.05) !important;
+
+        /* Buttons */
+        --button-fg: #050505 !important;
+        --button-bg: #00f0ff !important;
+        --button-hover-bg: #0080ff !important;
+        --default-button-bg: #00f0ff !important;
+        --default-button-hover-bg: #0080ff !important;
+        --close-button-bg: rgba(239, 68, 68, 0.2) !important;
+        --close-button-hover-bg: rgba(239, 68, 68, 0.4) !important;
+    }
+
+    /* ==================================================================== */
+    /* CUSTOM GLASSMORPHISM STRUCTURAL INJECTIONS */
+    /* ==================================================================== */
+    body {
+        background: #050505 !important;
+        font-family: 'Inter', system-ui, sans-serif !important;
+    }
+
+    #vanta-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        pointer-events: none;
+    }
+
+    /* Glass headers */
+    #header {
+        backdrop-filter: blur(20px);
+        border-bottom: 2px solid var(--border-color);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .breadcrumbs {
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    /* Glass modules */
+    #content-main .module,
+    #recent-actions-module,
+    .inline-group,
+    .errornote {
+        background: rgba(20, 20, 20, 0.6) !important;
+        backdrop-filter: blur(20px) !important;
+        border: 1px solid var(--border-color) !important;
+        border-radius: 12px !important;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6) !important;
+        overflow: hidden;
+        margin-bottom: 24px;
+    }
+
+    .module h2,
+    .module caption,
+    .inline-group h2,
+    #recent-actions-module h2 {
+        background: rgba(0, 240, 255, 0.1) !important;
+        color: #ffffff !important;
+        border-bottom: 1px solid var(--border-color) !important;
+        padding: 12px 15px !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.5px;
+    }
+
+    /* Tables styling inside modules */
+    table {
+        background: transparent !important;
+    }
+
+    thead th {
+        background: rgba(0, 0, 0, 0.4) !important;
+        border-bottom: 1px solid var(--border-color) !important;
+    }
+
+    tr.alt {
+        background: rgba(255, 255, 255, 0.02) !important;
+    }
+
+    td,
+    th {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    }
+
+    tr:hover {
+        background: rgba(0, 240, 255, 0.05) !important;
+    }
+
+    /* Form element enhancements */
+    input[type=text],
+    input[type=password],
+    input[type=email],
+    input[type=url],
+    input[type=number],
+    input[type=tel],
+    textarea,
+    select,
+    .vTextField {
+        background: rgba(0, 0, 0, 0.5) !important;
+        border: 1px solid var(--border-color) !important;
+        color: #ffffff !important;
+        border-radius: 8px !important;
+        padding: 8px 12px !important;
+        transition: all 0.3s ease;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+        box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.3) !important;
+        border-color: #00f0ff !important;
+        outline: none !important;
+    }
+
+    /* Buttons */
+    .button,
+    input[type=submit],
+    input[type=button],
+    .submit-row input,
+    a.button {
+        background: #00f0ff !important;
+        color: #050505 !important;
+        border: none !important;
+        border-radius: 8px !important;
+        padding: 10px 20px !important;
+        font-weight: 600 !important;
+        transition: all 0.3s ease !important;
+        box-shadow: 0 4px 15px rgba(0, 240, 255, 0.3) !important;
+        cursor: pointer;
+    }
+
+    .button:hover,
+    input[type=submit]:hover,
+    input[type=button]:hover {
+        background: #0080ff !important;
+        box-shadow: 0 6px 20px rgba(0, 240, 255, 0.5) !important;
+        transform: translateY(-2px);
+    }
+
+    .button.default,
+    input[type=submit].default,
+    .submit-row input.default {
+        background: #00f0ff !important;
+    }
+</style>
+{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Create Vanta container element dynamically and append to body
+        const vantaBg = document.createElement('div');
+        vantaBg.id = 'vanta-bg';
+        document.body.prepend(vantaBg);
+
+        // Initialize 3D WebGL backend tracking theme
+        VANTA.NET({
+            el: "#vanta-bg",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0x00f0ff,
+            backgroundColor: 0x050505,
+            points: 12.00,
+            maxDistance: 20.00,
+            spacing: 20.00,
+            showDots: true
+        });
+    });
+</script>
+{% endblock %}

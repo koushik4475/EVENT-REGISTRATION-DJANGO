@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="col-md-5">
+        <div class="glass-card shadow-lg">
+            <div class="text-center mb-4">
+                <h2 class="text-gradient">Admin Portal</h2>
+                <p class="text-light opacity-75">Secure access for staff and administrators</p>
+            </div>
+
+            <form action="{{ app_path }}" method="post" id="login-form">
+                {% csrf_token %}
+                <div class="mb-4">
+                    <label for="id_username" class="form-label text-light fw-medium">Username:</label>
+                    <input type="text" name="username" class="form-control" autofocus autocapitalize="none"
+                        autocomplete="username" maxlength="150" required id="id_username">
+                </div>
+                <div class="mb-4">
+                    <label for="id_password" class="form-label text-light fw-medium">Password:</label>
+                    <input type="password" name="password" class="form-control" autocomplete="current-password" required
+                        id="id_password">
+                    <input type="hidden" name="next" value="{{ next }}">
+                </div>
+
+                {% if form.errors and not form.non_field_errors %}
+                <div class="alert alert-danger"
+                    style="background: rgba(239, 68, 68, 0.2); border: 1px solid var(--danger-color); color: var(--text-main);">
+                    Please correct the error below.
+                </div>
+                {% endif %}
+
+                {% if form.non_field_errors %}
+                <div class="alert alert-danger"
+                    style="background: rgba(239, 68, 68, 0.2); border: 1px solid var(--danger-color); color: var(--text-main);">
+                    {% for error in form.non_field_errors %}
+                    {{ error }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if user.is_authenticated %}
+                <div class="alert alert-warning"
+                    style="background: rgba(245, 158, 11, 0.2); border: 1px solid #f59e0b; color: var(--text-main);">
+                    You are authenticated as {{ username }}, but are not authorized to access this page. Would you like
+                    to login to a different account?
+                </div>
+                {% endif %}
+
+                <button type="submit" class="btn btn-primary w-100 py-3 mt-2 fs-5 fw-medium">Log in</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+<script>
+    VanillaTilt.init(document.querySelectorAll(".glass-card"), {
+        max: 8,
+        speed: 400,
+        glare: true,
+        "max-glare": 0.2
+    });
+
+    // Add glowing focus effect exactly like our other forms
+    document.querySelectorAll('.form-control').forEach(input => {
+        input.addEventListener('focus', () => {
+            input.parentElement.classList.add('focused-field');
+        });
+        input.addEventListener('blur', () => {
+            input.parentElement.classList.remove('focused-field');
+        });
+    });
+</script>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.waves.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        VANTA.WAVES({
+            el: "#vanta-bg",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0x050505,
+            shininess: 60.00,
+            waveHeight: 25.00,
+            waveSpeed: 0.90,
+            zoom: 0.8
+        });
+    });
+</script>
+{% endblock %}

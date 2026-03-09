@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center flex-grow-1 animate-fade-up">
+    <div class="col-md-6 text-center">
+        <div class="glass-card shadow-lg p-5" style="border-top: 4px solid var(--success-color);">
+            <div class="mb-4">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" class="text-success" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+            </div>
+            <h2 class="text-gradient mb-3">Registration Successful!</h2>
+            <p class="text-muted mb-4">Thank you for registering. Our team will review your registration details and get
+                back to you shortly.</p>
+            <a href="{% url 'home' %}" class="btn btn-primary rounded-pill px-4">Return Home</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.dots.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        VANTA.DOTS({
+            el: "#vanta-bg",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0x10b981, // Green success accent
+            color2: 0x00f0ff,
+            backgroundColor: 0x050505,
+            size: 4.00,
+            spacing: 40.00
+        });
+    });
+</script>
+{% endblock %}
