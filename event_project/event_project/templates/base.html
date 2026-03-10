@@ -14,6 +14,7 @@
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
@@ -47,16 +48,16 @@
                     {% if user.is_staff %}
                     <li class="nav-item ms-2">
                         <a class="nav-link px-3 {% if request.resolver_match.url_name == 'registration_list' %}active{% endif %}"
-                            href="{% url 'registration_list' %}">Dashboard</a>
+                            href="{% url 'registration_list' %}">Admin Dashboard</a>
                     </li>
                     {% endif %}
                     <li class="nav-item ms-2">
-                        <!-- Basic logout form/link if we had one, otherwise just standard link -->
                         <a class="nav-link px-3" href="{% url 'admin:logout' %}?next=/">Logout</a>
                     </li>
                     {% else %}
                     <li class="nav-item ms-2">
-                        <a class="nav-link px-3 text-primary" href="{% url 'admin:index' %}">Admin Login</a>
+                        <a class="nav-link px-3 text-primary fw-bold border border-primary rounded-pill"
+                            href="{% url 'admin:index' %}">Admin Login</a>
                     </li>
                     {% endif %}
                 </ul>
@@ -80,10 +81,13 @@
     </div>
 
     <!-- Footer -->
-    <footer class="mt-auto py-4 text-center text-light opacity-75"
-        style="border-top: 1px solid var(--border-color); background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(10px);">
+    <footer class="mt-auto py-5 text-center text-white-50"
+        style="border-top: 1px solid var(--border-color); background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(20px);">
         <div class="container animate-fade-up">
-            <small>&copy; 2026 Nexus Events Registration. All Rights Reserved.</small>
+            <div class="mb-3">
+                <span class="navbar-brand text-gradient fs-4">NexusEvents</span>
+            </div>
+            <p class="small mb-0">&copy; 2026 Nexus Events Registration. All Rights Reserved.</p>
         </div>
     </footer>
 

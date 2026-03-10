@@ -8,28 +8,48 @@
             designed for scale and excellence.</p>
 
         <div class="d-flex justify-content-center gap-4 mt-4 animate-fade-up stagger-2">
-            <a href="{% url 'registration_create' %}" class="btn btn-primary btn-lg rounded-pill px-5 shadow-lg">Get
-                Started Now</a>
+            <a href="{% url 'registration_create' %}"
+                class="btn btn-primary btn-lg rounded-pill px-5 shadow-lg">Register Now</a>
             {% if user.is_staff %}
-            <a href="{% url 'registration_list' %}" class="btn btn-outline-light btn-lg rounded-pill px-5">View
+            <a href="{% url 'registration_list' %}" class="btn btn-outline-light btn-lg rounded-pill px-5">Admin
                 Dashboard</a>
             {% endif %}
         </div>
+    </div>
+</div>
 
-        <div class="hero-stats animate-fade-up stagger-3 justify-content-center">
-            <div class="stat-item">
-                <h3 class="text-gradient">10k+</h3>
-                <p>Registrations</p>
-            </div>
-            <div class="stat-item">
-                <h3 class="text-gradient">99%</h3>
-                <p>Satisfaction</p>
-            </div>
-            <div class="stat-item">
-                <h3 class="text-gradient">24/7</h3>
-                <p>Support</p>
+<div class="container pb-5">
+    <div class="row g-4 animate-fade-up stagger-3">
+        <div class="col-12 text-center mb-4">
+            <h2 class="text-gradient">Available Events</h2>
+            <p class="text-white-50">Discover and join our upcoming exclusive events</p>
+        </div>
+        {% for event in events %}
+        <div class="col-md-6 col-lg-4">
+            <div class="glass-card h-100 p-4 d-flex flex-column" data-tilt>
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <span
+                        class="badge bg-primary bg-opacity-25 text-primary border border-primary px-3 py-2 rounded-pill">
+                        {{ event.date|date:"M d, Y" }}
+                    </span>
+                    <span class="text-white-50 small"><i class="bi bi-people pe-1"></i>Capacity: {{ event.capacity
+                        }}</span>
+                </div>
+                <h4 class="text-gradient mb-3">{{ event.name }}</h4>
+                <p class="text-white-50 small flex-grow-1">{{ event.description|truncatewords:20 }}</p>
+                <div class="mt-4">
+                    <a href="{% url 'registration_create' %}?event={{ event.id }}"
+                        class="btn btn-primary w-100 rounded-pill">Join Event</a>
+                </div>
             </div>
         </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <div class="glass-card p-5">
+                <p class="text-white-50">No events scheduled at the moment. Check back soon!</p>
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </div>
 

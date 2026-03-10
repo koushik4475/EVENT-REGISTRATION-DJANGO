@@ -11,10 +11,8 @@ from .forms import RegistrationForm
 
 # ✅ Home view → show registration list instead of missing home.html
 def home(request):
-    if request.user.is_staff:
-        # Instead of redirecting staff, let them see the brand new Hero section too!
-        pass
-    return render(request, 'events/home.html')
+    events = Event.objects.all().order_by('date')
+    return render(request, 'events/home.html', {'events': events})
 
 
 # ✅ Registration form (create view)
