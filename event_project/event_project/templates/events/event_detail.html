@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ event.name }} - NexusEvents{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center animate-fade-up">
+    <div class="col-lg-8">
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                <li class="breadcrumb-item active text-white-50" aria-current="page">{{ event.name }}</li>
+            </ol>
+        </nav>
+
+        <div class="glass-card">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 mb-4">
+                <div>
+                    <span class="badge bg-primary rounded-pill px-3 py-2 mb-2">Event Details</span>
+                    <h1 class="h2 text-gradient mb-0">{{ event.name }}</h1>
+                    <p class="text-white-50 mt-2 mb-0">
+                        <i class="bi bi-calendar-event me-2 text-primary"></i>{{ event.date|date:"l, F d, Y @ P" }}
+                    </p>
+                </div>
+                <div class="text-md-end">
+                    <div class="glass-card py-2 px-3 border-secondary d-inline-block">
+                        <span class="d-block text-white-50 small text-uppercase">Availability</span>
+                        <span class="h4 mb-0">{{ event.capacity }} Slots</span>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="border-secondary opacity-25 mb-4">
+
+            <h3 class="h5 mb-3 text-primary uppercase small tracking-wider">About this Event</h3>
+            <div class="event-description text-white-50 mb-5" style="line-height: 1.8; font-size: 1.1rem;">
+                {{ event.description|linebreaks }}
+            </div>
+
+            <div class="d-grid gap-3 d-md-flex">
+                <a href="{% url 'registration_create_specific' event.pk %}" class="btn btn-primary btn-lg rounded-pill px-5 flex-grow-1">
+                    <i class="bi bi-pencil-square me-2"></i>Register Now
+                </a>
+                <a href="{% url 'home' %}" class="btn btn-outline-light btn-lg rounded-pill px-4">
+                    Back to List
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

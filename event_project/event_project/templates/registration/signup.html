@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign Up - NexusEvents{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center animate-fade-up">
+    <div class="col-lg-5 col-md-7">
+        <div class="glass-card">
+            <div class="text-center mb-5">
+                <i class="bi bi-shield-lock-fill text-primary fs-1 mb-3 d-block"></i>
+                <h1 class="h3 text-gradient">Create Account</h1>
+                <p class="text-white-50">Join NexusEvents for a seamless experience.</p>
+            </div>
+
+            <form method="post">
+                {% csrf_token %}
+                
+                {% for field in form %}
+                <div class="mb-3">
+                    <label class="form-label text-white-50 small">{{ field.label }}</label>
+                    {{ field }}
+                    {% for error in field.errors %}
+                    <div class="text-danger small mt-1">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+
+                <div class="d-grid mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg rounded-pill">Create Account</button>
+                </div>
+            </form>
+
+            <div class="text-center mt-4">
+                <p class="text-white-50 small mb-0">Already have an account? <a href="{% url 'admin:login' %}" class="text-primary fw-bold">Login</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    input {
+        background: rgba(15, 23, 42, 0.6) !important;
+        border: 1px solid rgba(0, 240, 255, 0.2) !important;
+        color: #fff !important;
+        border-radius: 10px !important;
+        padding: 0.75rem 1rem !important;
+    }
+    input:focus {
+        border-color: #00f0ff !important;
+        box-shadow: 0 0 0 4px rgba(0, 240, 255, 0.2) !important;
+    }
+</style>
+{% endblock %}

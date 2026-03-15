@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Event Registration</title>
+    <title>{% block title %}Premium Event Registration{% endblock %}</title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,82 +19,127 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-    <!-- 3D Background Dependencies (Zero Lag WebGL) -->
+    <!-- 3D Background Dependencies -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <style>
+        :root {
+            --nav-bg: rgba(10, 10, 15, 0.8);
+        }
+        .navbar {
+            background: var(--nav-bg) !important;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .navbar-toggler {
+            border: none;
+            padding: 0;
+        }
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+        @media (max-width: 991.98px) {
+            .navbar-collapse {
+                background: var(--nav-bg);
+                padding: 1rem;
+                border-radius: 15px;
+                margin-top: 1rem;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+        }
+    </style>
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
     <div id="vanta-bg"></div>
-    <nav class="navbar navbar-expand-lg fixed-top shadow-sm">
+    
+    <nav class="navbar navbar-expand-lg fixed-top shadow-lg">
         <div class="container">
-            <a class="navbar-brand animate-fade-up d-flex align-items-center gap-2" href="{% url 'home' %}">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round" class="text-primary">
-                    <path d="M12 2v20" />
-                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                </svg>
-                <span>NexusEvents</span>
+            <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'home' %}">
+                <i class="bi bi-box-seam-fill text-primary"></i>
+                <span class="fw-bold tracking-tight">NexusEvents</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
+                <i class="bi bi-list text-white fs-2"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto animate-fade-up stagger-1">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
                     <li class="nav-item">
-                        <a class="nav-link px-3 {% if request.resolver_match.url_name == 'registration_create' %}active{% endif %}"
-                            href="{% url 'registration_create' %}">Register</a>
+                        <a class="nav-link px-3" href="{% url 'home' %}">Home</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="{% url 'registration_create' %}">All Events</a>
+                    </li>
+                    
+                    <div class="vr d-none d-lg-block mx-2 bg-secondary opacity-25"></div>
+
                     {% if user.is_authenticated %}
-                    {% if user.is_staff %}
-                    <li class="nav-item ms-2">
-                        <a class="nav-link px-3 {% if request.resolver_match.url_name == 'registration_list' %}active{% endif %}"
-                            href="{% url 'registration_list' %}">Admin Dashboard</a>
-                    </li>
-                    {% endif %}
-                    <li class="nav-item ms-2">
-                        <a class="nav-link px-3" href="{% url 'admin:logout' %}?next=/">Logout</a>
-                    </li>
+                        {% if user.is_staff %}
+                        <li class="nav-item">
+                            <a class="nav-link px-3 py-1 btn btn-outline-primary border-1 rounded-pill d-flex align-items-center gap-1" href="{% url 'registration_list' %}">
+                                <i class="bi bi-speedometer2"></i> Staff Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3 py-1 btn btn-outline-secondary border-1 rounded-pill d-flex align-items-center gap-1 ms-lg-1" href="{% url 'admin:index' %}">
+                                <i class="bi bi-shield-lock"></i> Admin Panel
+                            </a>
+                        </li>
+                        {% endif %}
+                        <li class="nav-item dropdown ms-lg-2">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle fs-5"></i> {{ user.username }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end glass-card border-0 shadow-lg mt-2">
+                                <li><span class="dropdown-item-text text-white-50 small">Signed in as <strong>{{ user.username }}</strong></span></li>
+                                <li><hr class="dropdown-divider border-secondary opacity-25"></li>
+                                <li>
+                                    <form method="post" action="{% url 'admin:logout' %}?next=/">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item text-danger d-flex align-items-center gap-2">
+                                            <i class="bi bi-box-arrow-right"></i> Logout
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
                     {% else %}
-                    <li class="nav-item ms-2">
-                        <a class="nav-link px-3 text-primary fw-bold border border-primary rounded-pill"
-                            href="{% url 'admin:index' %}">Admin Login</a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3" href="{% url 'admin:login' %}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link btn btn-primary rounded-pill px-4 ms-lg-2" href="{% url 'signup' %}">Sign Up</a>
+                        </li>
                     {% endif %}
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="container" style="margin-top: 100px; flex: 1; display: flex; flex-direction: column;">
+    <main class="container py-4 mt-5 pt-5 flex-grow-1">
         {% if messages %}
-        <div class="animate-fade-up mt-2 mb-4">
+        <div class="mt-4">
             {% for message in messages %}
-            <div class="alert alert-{{ message.tags }} glass-card text-white border-0 py-3"
-                style="background: rgba(16, 185, 129, 0.2);">
-                {{ message }}
+            <div class="alert alert-{{ message.tags }} glass-card text-white border-0 animate-fade-up d-flex align-items-center gap-3"
+                 style="background: rgba(var(--bs-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}-rgb), 0.15);">
+                <i class="bi bi-info-circle-fill"></i>
+                <div>{{ message }}</div>
             </div>
             {% endfor %}
         </div>
         {% endif %}
 
         {% block content %}{% endblock %}
-    </div>
+    </main>
 
-    <!-- Footer -->
-    <footer class="mt-auto py-5 text-center text-white-50"
-        style="border-top: 1px solid var(--border-color); background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(20px);">
-        <div class="container animate-fade-up">
-            <div class="mb-3">
-                <span class="navbar-brand text-gradient fs-4">NexusEvents</span>
-            </div>
-            <p class="small mb-0">&copy; 2026 Nexus Events Registration. All Rights Reserved.</p>
+    <footer class="py-5 mt-5" style="border-top: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.5);">
+        <div class="container text-center">
+            <p class="text-white-50 mb-0">&copy; 2026 NexusEvents. Crafted for Excellence.</p>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Per-page 3D Background Initialization -->
     {% block extra_scripts %}{% endblock %}
 </body>
 
-</html>
+</html>

@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - NexusEvents{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center animate-fade-up">
+    <div class="col-lg-4 col-md-6">
+        <div class="glass-card">
+            <div class="text-center mb-5">
+                <i class="bi bi-person-circle text-primary fs-1 mb-3 d-block"></i>
+                <h1 class="h3 text-gradient">Welcome Back</h1>
+                <p class="text-white-50">Please login to your account.</p>
+            </div>
+
+            <form method="post" action="{% url 'admin:login' %}">
+                {% csrf_token %}
+                
+                {% if form.errors %}
+                <div class="alert alert-danger py-2 small mb-3">Invalid username or password.</div>
+                {% endif %}
+
+                <div class="mb-3">
+                    <label class="form-label text-white-50 small">Username</label>
+                    <input type="text" name="username" class="form-control" required>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label text-white-50 small">Password</label>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary btn-lg rounded-pill">Login</button>
+                </div>
+            </form>
+
+            <div class="text-center mt-4">
+                <p class="text-white-50 small mb-0">Don't have an account? <a href="{% url 'signup' %}" class="text-primary fw-bold">Sign Up</a></p>
+                <p class="mt-2"><a href="{% url 'home' %}" class="text-white-50 small"><i class="bi bi-arrow-left me-1"></i>Back to Home</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    input {
+        background: rgba(15, 23, 42, 0.6) !important;
+        border: 1px solid rgba(0, 240, 255, 0.2) !important;
+        color: #fff !important;
+        border-radius: 10px !important;
+        padding: 0.75rem 1rem !important;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}Registrations - NexusEvents Dashboard{% endblock %}
+
+{% block content %}
+<div class="row animate-fade-up">
+    <div class="col-12 mb-4 d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="h2 text-gradient mb-1">Staff Dashboard</h1>
+            <p class="text-white-50">Manage all attendee registrations and event status.</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="{% url 'admin:events_event_add' %}" class="btn btn-primary rounded-pill">
+                <i class="bi bi-plus-lg me-1"></i>Create Event
+            </a>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="glass-card p-0 overflow-hidden">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th class="ps-4">Attendee</th>
+                            <th>Event</th>
+                            <th>Applied</th>
+                            <th>Status</th>
+                            <th class="text-end pe-4">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reg in registrations %}
+                        <tr>
+                            <td class="ps-4">
+                                <div class="fw-bold">{{ reg.name }}</div>
+                                <div class="small text-white-50">{{ reg.email }}</div>
+                            </td>
+                            <td>
+                                <div class="text-primary fw-medium">{{ reg.event.name }}</div>
+                            </td>
+                            <td>
+                                <div class="small text-white-50">{{ reg.created_at|date:"M d, Y" }}</div>
+                            </td>
+                            <td>
+                                {% if reg.status == 'P' %}
+                                <span class="badge bg-warning text-dark rounded-pill px-3">Pending</span>
+                                {% elif reg.status == 'A' %}
+                                <span class="badge bg-success rounded-pill px-3">Approved</span>
+                                {% else %}
+                                <span class="badge bg-danger rounded-pill px-3">Rejected</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-end pe-4">
+                                {% if reg.status == 'P' %}
+                                <a href="{% url 'update_registration_status' reg.pk 'approve' %}" class="btn btn-sm btn-success rounded-pill px-3 me-2">Approve</a>
+                                <a href="{% url 'update_registration_status' reg.pk 'reject' %}" class="btn btn-sm btn-outline-danger rounded-pill px-3">Reject</a>
+                                {% else %}
+                                <span class="text-white-50 small">Handled</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center py-5">
+                                <div class="text-white-50">No registrations found yet.</div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .table thead th {
+        background: rgba(255, 255, 255, 0.03) !important;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+        color: var(--primary-color);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        padding: 1rem;
+    }
+    .table tbody td {
+        background: transparent !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        padding: 1.25rem 1rem;
+        vertical-align: middle;
+        color: #fff;
+    }
+    .table-hover tbody tr:hover td {
+        background: rgba(255, 255, 255, 0.02) !important;
+    }
+</style>
+{% endblock %}

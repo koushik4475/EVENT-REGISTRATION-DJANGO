@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Success - NexusEvents{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center py-5 animate-fade-up">
+    <div class="col-md-6 text-center">
+        <div class="glass-card py-5">
+            <div class="mb-4">
+                <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
+            </div>
+            <h1 class="h2 text-gradient mb-3">Registration Successful!</h1>
+            <p class="text-white-50 mb-5 fs-5">Thank you for registering. You will receive a confirmation email shortly. Our staff will review your application and update the status in your dashboard.</p>
+            
+            <div class="d-grid gap-2 d-md-block">
+                <a href="{% url 'home' %}" class="btn btn-primary btn-lg rounded-pill px-5">Back to Home</a>
+                <a href="{% url 'registration_create' %}" class="btn btn-outline-light btn-lg rounded-pill px-4">Register for Another</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
