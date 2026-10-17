@@ -1,0 +1,38 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Registration List</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Event</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for registration in registrations %}
+            <tr>
+                <td>{{ registration.name }}</td>
+                <td>{{ registration.email }}</td>
+                <td>{{ registration.phone }}</td>
+                <td>{{ registration.event.name }}</td>
+                <td>{{ registration.get_status_display }}</td>
+                <td>
+                    {% if registration.status == 'P' %}
+                    <a href="{% url 'update_registration' registration.pk 'approve' %}" 
+                       class="btn btn-success btn-sm">Approve</a>
+                    <a href="{% url 'update_registration' registration.pk 'reject' %}" 
+                       class="btn btn-danger btn-sm">Reject</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
