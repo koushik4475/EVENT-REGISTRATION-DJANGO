@@ -347,7 +347,10 @@ cd EVENT-REGISTRATION-DJANGO-
 #### 2️⃣ Create Virtual Environment
 
 ```bash
-# Create virtual environment
+# Django Event Registration System | Online Event Management Platform
+
+EVENT-REGISTRATION-DJANGO is a Python and Django web application for managing event discovery and registrations through a browser-based interface. The project brings together attendee-facing registration flows and administrative event management, with Bootstrap styling and SQLite-backed development setup. It is a practical starting point for learning Django forms, views, authentication, and event-management workflows.
+
 python -m venv venv
 
 # Activate virtual environment
