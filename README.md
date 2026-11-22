@@ -401,13 +401,15 @@ python manage.py createsuperuser
 
 #### 7️⃣ Run the Development Server
 
+```bash
 python manage.py runserver
+```
 
 <div align="center">
   <img src="https://user-images.githubusercontent.com/74038190/212284094-e50ac5d1-0b9c-4e5d-8e9a-24fb9896a1fc.gif" width="400">
 </div>
 
-#### 7️⃣ Access the Application
+#### 8️⃣ Access the Application
 
 <table align="center">
 <tr>
