@@ -40,6 +40,7 @@ class RegistrationPrivacyAndStatusTests(TestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_status_change_rejects_get_requests(self):
+        self.client.force_login(self.staff_user)
         url = reverse(
             "update_registration",
             args=[self.registration.pk, "approve"],
