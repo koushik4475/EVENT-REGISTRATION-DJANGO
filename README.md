@@ -368,24 +368,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-#### 4️⃣ Database Setup
-
-```bash
-# Create database migrations
-python manage.py makemigrations
-
-# Apply migrations
-python manage.py migrate
-```
-
-#### 5️⃣ Create Superuser
-
-```bash
-python manage.py createsuperuser
-# Follow the prompts to set username, email, and password
-```
-
-#### 6️⃣ Configure Django and Run the Development Server
+#### 4️⃣ Configure Django Environment
 
 Set a private Django secret key before starting the application. Keep it out of source control. The defaults keep debug mode disabled and accept only local development hosts.
 
@@ -397,10 +380,28 @@ export DJANGO_DEBUG=true
 # Windows PowerShell
 $env:DJANGO_SECRET_KEY = python -c "import secrets; print(secrets.token_urlsafe(50))"
 $env:DJANGO_DEBUG = "true"
-
-# Start the server
-python manage.py runserver
 ```
+
+#### 5️⃣ Database Setup
+
+```bash
+# Create database migrations
+python manage.py makemigrations
+
+# Apply migrations
+python manage.py migrate
+```
+
+#### 6️⃣ Create Superuser
+
+```bash
+python manage.py createsuperuser
+# Follow the prompts to set username, email, and password
+```
+
+#### 7️⃣ Run the Development Server
+
+python manage.py runserver
 
 <div align="center">
   <img src="https://user-images.githubusercontent.com/74038190/212284094-e50ac5d1-0b9c-4e5d-8e9a-24fb9896a1fc.gif" width="400">
