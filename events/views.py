@@ -1,21 +1,21 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView, CreateView, TemplateView
-from django.urls import reverse_lazy
-from django.contrib.auth.mixins import UserPassesTestMixin
-from django.contrib.admin.views.decorators import staff_member_required
-from django.utils.decorators import method_decorator
 from django.contrib import messages
-from .models import Registration, Event
+from django.contrib.admin.views.decorators import staff_member_required
+from django.http import Http404
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.decorators.http import require_POST
+from django.views.generic import CreateView, ListView, TemplateView
+
 from .forms import RegistrationForm
+from .models import Registration
 
 
-# ✅ Home view → show registration list instead of missing home.html
 def home(request):
-    registrations = Registration.objects.all().order_by('-created_at')
-    return render(request, 'events/registration_list.html', {'registrations': registrations})
+    """Send visitors to the public registration form, never the private attendee list."""
+    return redirect('registration_create')
 
 
-# ✅ Registration form (create view)
 class RegistrationCreateView(CreateView):
     model = Registration
     form_class = RegistrationForm
@@ -23,12 +23,10 @@ class RegistrationCreateView(CreateView):
     success_url = reverse_lazy('registration_success')
 
 
-# ✅ Success page after registration
 class SuccessView(TemplateView):
     template_name = 'events/success.html'
 
 
-# ✅ Registration list (staff only)
 class RegistrationListView(ListView):
     model = Registration
     template_name = 'events/registration_list.html'
@@ -42,17 +40,20 @@ class RegistrationListView(ListView):
         return Registration.objects.all().order_by('-created_at')
 
 
-# ✅ Update registration status (approve/reject) → staff only
 @staff_member_required
+@require_POST
 def update_registration_status(request, pk, action):
-    registration = get_object_or_404(Registration, pk=pk)
+    """Allow staff to change registration status only through a POST request."""
+    if action not in {'approve', 'reject'}:
+        raise Http404('Unknown registration action.')
 
+    registration = get_object_or_404(Registration, pk=pk)
     if action == 'approve':
         registration.status = Registration.Status.APPROVED
         messages.success(request, 'Registration approved successfully.')
-    elif action == 'reject':
+    else:
         registration.status = Registration.Status.REJECTED
         messages.success(request, 'Registration rejected successfully.')
 
-    registration.save()
+    registration.save(update_fields=['status'])
     return redirect('registration_list')
