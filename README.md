@@ -385,9 +385,20 @@ python manage.py createsuperuser
 # Follow the prompts to set username, email, and password
 ```
 
-#### 6️⃣ Run Development Server
+#### 6️⃣ Configure Django and Run the Development Server
+
+Set a private Django secret key before starting the application. Keep it out of source control. The defaults keep debug mode disabled and accept only local development hosts.
 
 ```bash
+# macOS/Linux
+export DJANGO_SECRET_KEY="$(python -c 'import secrets; print(secrets.token_urlsafe(50))')"
+export DJANGO_DEBUG=true
+
+# Windows PowerShell
+$env:DJANGO_SECRET_KEY = python -c "import secrets; print(secrets.token_urlsafe(50))"
+$env:DJANGO_DEBUG = "true"
+
+# Start the server
 python manage.py runserver
 ```
 
