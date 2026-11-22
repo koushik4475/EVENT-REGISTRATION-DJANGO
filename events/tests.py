@@ -31,7 +31,7 @@ class RegistrationPrivacyAndStatusTests(TestCase):
         response = self.client.get(reverse('registration_list'))
 
         self.assertEqual(response.status_code, 302)
-        self.assertIn(reverse('login'), response.url)
+        self.assertTrue(response.url.startswith('/accounts/login/'))
 
     def test_status_change_rejects_get_requests(self):
         user = get_user_model().objects.create_user(
