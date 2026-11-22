@@ -24,12 +24,20 @@
                 <td>{{ registration.get_status_display }}</td>
                 <td>
                     {% if registration.status == 'P' %}
-                    <a href="{% url 'update_registration' registration.pk 'approve' %}" 
-                       class="btn btn-success btn-sm">Approve</a>
-                    <a href="{% url 'update_registration' registration.pk 'reject' %}" 
-                       class="btn btn-danger btn-sm">Reject</a>
+                    <form method="post" action="{% url 'update_registration' registration.pk 'approve' %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                    </form>
+                    <form method="post" action="{% url 'update_registration' registration.pk 'reject' %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                    </form>
                     {% endif %}
                 </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">No registrations yet.</td>
             </tr>
             {% endfor %}
         </tbody>
