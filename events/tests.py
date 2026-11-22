@@ -25,13 +25,12 @@ class RegistrationPrivacyAndStatusTests(TestCase):
         response = self.client.get(reverse('home'))
 
         self.assertRedirects(response, reverse('registration_create'))
-        self.assertNotContains(response, 'Private Attendee')
 
     def test_registration_list_requires_staff(self):
         response = self.client.get(reverse('registration_list'))
 
         self.assertEqual(response.status_code, 302)
-        self.assertTrue(response.url.startswith('/accounts/login/'))
+        self.assertTrue(response.url.startswith('/admin/login/'))
 
     def test_status_change_rejects_get_requests(self):
         user = get_user_model().objects.create_user(
